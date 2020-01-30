@@ -34,12 +34,19 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 	
 	@Override
-	public Mono<CreditAccount> consumos(Double monto, String numTarjeta) {
+	public Mono<Void> deleteProducto(CreditAccount prod) {
+		// TODO Auto-generated method stub
+		return productoDao.delete(prod);
+	}
+	
+	@Override
+	public Mono<CreditAccount> consumos(Double monto, String numTarjeta, String codigo_bancario) {
 		//verifica si existe el numero de cuenta
-		return productoDao.viewNumTarjeta(numTarjeta).flatMap(c -> {
+		return productoDao.viewNumTarjeta(numTarjeta, codigo_bancario).flatMap(c -> {
 			
 			System.out.println("Objeto credito -->>>" + c.toString());
 			System.out.println("Monto -->>>>" + monto);
+			
 			if (monto < c.getSaldo()) {
 				c.setSaldo((c.getSaldo() - monto));
 				c.setConsumo(c.getConsumo() + monto);
@@ -51,23 +58,32 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 
 	@Override
-	public Mono<CreditAccount> pagos(Double monto, String numTarjeta) {
-		return productoDao.viewNumTarjeta(numTarjeta).flatMap(c -> {
+	public Mono<CreditAccount> pagos(Double monto, String numTarjeta, String codigo_bancario) {
+		return productoDao.viewNumTarjeta(numTarjeta, codigo_bancario).flatMap(c -> {
 			
 			if (c.getConsumo() == 0) {
-				return Mono.error(new InterruptedException("No tiene deuda"));
+				return Mono.error(new InterruptedException("SIN DEUDA"));
 			
-			}
-			c.setSaldo((c.getSaldo() + monto));
-			c.setConsumo(c.getConsumo() -  monto);
-			return productoDao.save(c);
+			}else {
 				
+				//ACTUALIZANDO EL SALDO Y EL CONSUMO
+				
+				c.setSaldo((c.getSaldo() + monto));
+				c.setConsumo(c.getConsumo() - monto);
+				return productoDao.save(c);
+			}
+			
 		});
 	}
 		
 	@Override
-	public Mono<CreditAccount> listProdNumTarj(String num) {
-		return productoDao.viewNumTarjeta(num);
+	public Mono<CreditAccount> listProdNumTarj(String num, String codigo_bancario) {
+		return productoDao.viewNumTarjeta(num, codigo_bancario);
+	}
+	
+	@Override
+	public Flux<CreditAccount> findAllProductoByDniCliente(String dni) {
+		return productoDao.viewDniCliente(dni);
 	}
 
 }

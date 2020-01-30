@@ -53,7 +53,7 @@ public class SpringBootWebfluMsCuentaCreditoApplication implements CommandLineRu
 		}).thenMany(					
 				Flux.just(
 						new CreditAccount("100001","47305710",personal,5000.0,2000.0,3000.0),
-						new CreditAccount("100002","47305711",empresarial,5000.0,1000.0,4000.0),
+						new CreditAccount("100002","47305711",empresarial,5000.0,0.0,.0),
 						new CreditAccount("100003","47305712",tarjeta,5000.0,4000.0,1000.0),
 						new CreditAccount("100004","47305713",adelantoEfectivo,5000.0,1500.0,3500.0)
 						
