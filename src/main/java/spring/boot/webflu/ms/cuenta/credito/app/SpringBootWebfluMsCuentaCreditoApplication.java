@@ -10,20 +10,20 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 
 import reactor.core.publisher.Flux;
-import spring.boot.webflu.ms.cuenta.credito.app.documents.CreditAccount;
-import spring.boot.webflu.ms.cuenta.credito.app.documents.TypeCreditAccount;
-import spring.boot.webflu.ms.cuenta.credito.app.service.ProductoService;
-import spring.boot.webflu.ms.cuenta.credito.app.service.TipoProductoService;
+import spring.boot.webflu.ms.cuenta.credito.app.documents.CuentaCredito;
+import spring.boot.webflu.ms.cuenta.credito.app.documents.TipoCuentaCredito;
+import spring.boot.webflu.ms.cuenta.credito.app.service.ProductoCreditoService;
+import spring.boot.webflu.ms.cuenta.credito.app.service.TipoCreditoProductoService;
 
 @EnableEurekaClient
 @SpringBootApplication
 public class SpringBootWebfluMsCuentaCreditoApplication implements CommandLineRunner{
 
 	@Autowired
-	private ProductoService serviceCredito;
+	private ProductoCreditoService serviceCredito;
 	
 	@Autowired
-	private TipoProductoService serviceTipoCredito;
+	private TipoCreditoProductoService serviceTipoCredito;
 	
 	@Autowired
 	private ReactiveMongoTemplate mongoTemplate;
@@ -40,10 +40,10 @@ public class SpringBootWebfluMsCuentaCreditoApplication implements CommandLineRu
 		mongoTemplate.dropCollection("ProductoCredito").subscribe();
 		mongoTemplate.dropCollection("tipoProducto").subscribe();
 		
-		TypeCreditAccount personal = new TypeCreditAccount("1","personal");
-		TypeCreditAccount empresarial = new TypeCreditAccount("2","empresarial");
-		TypeCreditAccount tarjeta = new TypeCreditAccount("3","tarjeta");
-		TypeCreditAccount adelantoEfectivo = new TypeCreditAccount("4","adelantoEfectivo");
+		TipoCuentaCredito personal = new TipoCuentaCredito("1","personal");
+		TipoCuentaCredito empresarial = new TipoCuentaCredito("2","empresarial");
+		TipoCuentaCredito tarjeta = new TipoCuentaCredito("3","tarjeta");
+		TipoCuentaCredito adelantoEfectivo = new TipoCuentaCredito("4","adelantoEfectivo");
 		
 		//
 		Flux.just(personal,empresarial,tarjeta,adelantoEfectivo)
@@ -52,14 +52,14 @@ public class SpringBootWebfluMsCuentaCreditoApplication implements CommandLineRu
 			log.info("Tipo de producto creado: " +  c.getDescripcion() + ", Id: " + c.getIdTipo());
 		}).thenMany(					
 				Flux.just(
-						new CreditAccount("100001","47305710",personal,5000.0,2000.0,3000.0),
-						new CreditAccount("100002","47305711",empresarial,5000.0,0.0,.0),
-						new CreditAccount("100003","47305712",tarjeta,5000.0,4000.0,1000.0),
-						new CreditAccount("100004","47305713",adelantoEfectivo,5000.0,1500.0,3500.0)
+						new CuentaCredito("100001","47305710",personal,5000.0,2000.0,3000.0,"bcp"),
+						new CuentaCredito("100002","47305711",empresarial,5000.0,0.0,.0,"bbva"),
+						new CuentaCredito("100003","47305712",tarjeta,5000.0,4000.0,1000.0,"xxx"),
+						new CuentaCredito("100004","47305713",adelantoEfectivo,5000.0,1500.0,3500.0,"yyy")
 						
 						)					
 					.flatMap(procredito -> {
-						return serviceCredito.saveProducto(procredito);
+						return serviceCredito.saveProductoCredito(procredito);
 					})					
 				).subscribe(procredito -> log.info("Insert: " + procredito.getId() + " " + procredito.getNumero_cuenta()));
 		
