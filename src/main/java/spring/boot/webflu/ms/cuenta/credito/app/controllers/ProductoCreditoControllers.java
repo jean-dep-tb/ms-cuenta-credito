@@ -74,10 +74,24 @@ public class ProductoCreditoControllers {
 					});
 	}
 	
+	// GUARDA CUENTA PRODUCTO BANCO ---> 
+	@PostMapping("/guardarCredito")
+	public Mono<CuentaCredito> guardarProBanco(@RequestBody CuentaCredito cuentaCredito) {
+		return productoService.saveProductoCredito(cuentaCredito);
+	}
+	
+	//CUENTAS SIN DEUDA
+	@GetMapping("/dniSinDeuda/{dni}")
+	public Flux<CuentaCredito> cuentasSinDeuda(@PathVariable String dni) {
+			Flux<CuentaCredito> credito = productoService.cuentaSinConsumo(dni);
+			return credito;
+
+	}
+	
 	@GetMapping("/dni/{dni}")
 	public Flux<CuentaCredito> productosCreditoCliente(@PathVariable String dni) {
-		Flux<CuentaCredito> producto = productoService.productoCreditoCliente(dni);
-		return producto;
+		Flux<CuentaCredito> credito = productoService.productoCreditoCliente(dni);
+		return credito;
 	}
 	
 	//RETIRO DE CREDITO - SERVICIO CONSUMIDO DESDE MS-OP-CREDITO
@@ -95,8 +109,8 @@ public class ProductoCreditoControllers {
 	//MUESTRA LA CUENTA BANCARIA CON EL NUMERO DE CUENTA
 	@GetMapping("/numero_cuenta/{numero_cuenta}/{codigo_bancario}")
 	public Mono<CuentaCredito> cuentaBancariaCredito(@PathVariable String numero_cuenta, @PathVariable String codigo_bancario) {
-		Mono<CuentaCredito> producto = productoService.productosCredito(numero_cuenta, codigo_bancario);
-		return producto;
+		Mono<CuentaCredito> credito = productoService.productosCredito(numero_cuenta, codigo_bancario);
+		return credito;
 	}
 	
 	//MUESTRA LOS SALDOS - POR NUMERO DE CUENTA

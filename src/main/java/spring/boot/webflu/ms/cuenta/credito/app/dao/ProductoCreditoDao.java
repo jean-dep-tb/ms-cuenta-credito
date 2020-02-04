@@ -2,7 +2,6 @@ package spring.boot.webflu.ms.cuenta.credito.app.dao;
 
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import spring.boot.webflu.ms.cuenta.credito.app.documents.CuentaCredito;
@@ -23,5 +22,8 @@ public interface ProductoCreditoDao extends ReactiveMongoRepository<CuentaCredit
 //	Flux<CuentaCredito> viewDniCliente(String dni);
 	
 	Flux<CuentaCredito> findByDni(String dni);
+	
+	@Query("{ 'dni' : ?0 , $where : 'this.consumo > 0'}  }")
+	Flux<CuentaCredito> verDeudaCredito(String dni);
 	
 }

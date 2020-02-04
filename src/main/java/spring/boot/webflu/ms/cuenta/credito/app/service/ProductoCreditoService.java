@@ -1,5 +1,4 @@
 package spring.boot.webflu.ms.cuenta.credito.app.service;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import spring.boot.webflu.ms.cuenta.credito.app.documents.CuentaCredito;
@@ -14,5 +13,5 @@ public interface ProductoCreditoService {
 	Mono<CuentaCredito> productosCredito(String numero_cuenta, String codigo_bancario);//listaProductosCredito - listProdNumTarj
 	Flux<CuentaCredito> productoCreditoCliente(String dni); //listarProductoCreditoCliente
 	Mono<Void> delete(CuentaCredito prod); //deleteProducto
-	
+	public Flux<CuentaCredito> cuentaSinConsumo(String dni);
 }

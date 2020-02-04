@@ -85,5 +85,9 @@ public class ProductoCreditoServiceImpl implements ProductoCreditoService {
 	public Flux<CuentaCredito> productoCreditoCliente(String dni) {
 		return productoDao.findByDni(dni);
 	}
+	
+	public Flux<CuentaCredito> cuentaSinConsumo(String dni){
+		return productoDao.verDeudaCredito(dni);
+	}
 
 }
