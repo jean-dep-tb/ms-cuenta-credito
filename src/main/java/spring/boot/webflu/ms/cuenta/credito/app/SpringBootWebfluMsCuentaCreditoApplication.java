@@ -58,7 +58,7 @@ public class SpringBootWebfluMsCuentaCreditoApplication implements CommandLineRu
 						new CuentaCredito("100002","47305711",empresarial,2000.0,2000.0,.0,"bcp"),
 						new CuentaCredito("100003","47305712",tarjeta,5000.0,4000.0,1000.0,"bcp"),
 						new CuentaCredito("100004","47305713",adelantoEfectivo,6000.0,1500.0,3500.0,"bbva"),
-						new CuentaCredito("100005","47305710",personal,3000.0,2000.0,1000.0,"bcp")
+						new CuentaCredito("100005","47305714",personal,3000.0,2000.0,1000.0,"bcp")
 						
 						)					
 					.flatMap(procredito -> {
