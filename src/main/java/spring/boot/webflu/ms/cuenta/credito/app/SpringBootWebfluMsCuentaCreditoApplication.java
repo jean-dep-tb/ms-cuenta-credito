@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 
@@ -15,6 +16,7 @@ import spring.boot.webflu.ms.cuenta.credito.app.documents.TipoCuentaCredito;
 import spring.boot.webflu.ms.cuenta.credito.app.service.ProductoCreditoService;
 import spring.boot.webflu.ms.cuenta.credito.app.service.TipoCreditoProductoService;
 
+@EnableCircuitBreaker
 @EnableEurekaClient
 @SpringBootApplication
 public class SpringBootWebfluMsCuentaCreditoApplication implements CommandLineRunner{
@@ -52,16 +54,17 @@ public class SpringBootWebfluMsCuentaCreditoApplication implements CommandLineRu
 			log.info("Tipo de producto creado: " +  c.getDescripcion() + ", Id: " + c.getIdTipo());
 		}).thenMany(					
 				Flux.just(
-						new CuentaCredito("100001","47305710",personal,5000.0,2000.0,3000.0,"bcp"),
-						new CuentaCredito("100002","47305711",empresarial,5000.0,0.0,.0,"bbva"),
-						new CuentaCredito("100003","47305712",tarjeta,5000.0,4000.0,1000.0,"xxx"),
-						new CuentaCredito("100004","47305713",adelantoEfectivo,5000.0,1500.0,3500.0,"yyy")
+						new CuentaCredito("100001","47305710",personal,5000.0,5000.0,0.0,"bcp"),
+						new CuentaCredito("100002","47305711",empresarial,2000.0,2000.0,.0,"bcp"),
+						new CuentaCredito("100003","47305712",tarjeta,5000.0,4000.0,1000.0,"bcp"),
+						new CuentaCredito("100004","47305713",adelantoEfectivo,6000.0,1500.0,3500.0,"bbva"),
+						new CuentaCredito("100005","47305710",personal,3000.0,2000.0,1000.0,"bcp")
 						
 						)					
 					.flatMap(procredito -> {
 						return serviceCredito.saveProductoCredito(procredito);
 					})					
-				).subscribe(procredito -> log.info("Insert: " + procredito.getId() + " " + procredito.getNumero_cuenta()));
+				).subscribe(procredito -> log.info("Insert: " + procredito.getId() + " " + procredito.getNumeroCuenta()));
 		
 		
 	}

@@ -13,8 +13,10 @@ public interface ProductoCreditoDao extends ReactiveMongoRepository<CuentaCredit
 	/*@Query("{ 'numero_cuenta' : ?0 }")
 	Flux<Producto> viewNumTarjeta(String numero_cuenta);*/
 	
-	@Query("{ 'numero_cuenta' : ?0 , 'codigo_bancario': ?1}")
-	Mono<CuentaCredito> viewCuentaBanco(String numero_cuenta, String codigo_bancario);
+//	@Query("{ 'numero_cuenta' : ?0 , 'codigo_bancario': ?1}")
+//	Mono<CuentaCredito> viewCuentaBanco(String numero_cuenta, String codigo_bancario);
+	
+	Mono<CuentaCredito> findByNumeroCuentaAndCodigoBanco(String numero_cuenta, String codigo_bancario);
 	
 //	Mono<CuentaCredito> findByNumero_cuentaAndCodigo_bancario(String numero_cuenta, String codigo_bancario);
 	

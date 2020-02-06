@@ -8,7 +8,7 @@ import lombok.Setter;
 public class CuentaCreditoDto {
 
 	private String dni;
-	private String numero_cuenta;
+	private String numeroCuenta;
 	private Double credito;
 	private Double saldo;
 	private Double consumo;

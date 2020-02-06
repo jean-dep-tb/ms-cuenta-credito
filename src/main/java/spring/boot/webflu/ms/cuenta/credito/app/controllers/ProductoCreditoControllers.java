@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import spring.boot.webflu.ms.cuenta.credito.app.documents.CuentaCredito;
@@ -28,6 +30,7 @@ public class ProductoCreditoControllers {
 	@Autowired
 	private TipoCreditoProductoService tipoProductoService;
 	
+	@ApiOperation(value = "LISTAR LAS CUENTAS DE CREDITO", notes="")
 	@GetMapping
 	public Mono<ResponseEntity<Flux<CuentaCredito>>> findAll() 
 	{
@@ -39,7 +42,8 @@ public class ProductoCreditoControllers {
 			
 			);
 	}
-		
+	
+	@ApiOperation(value = "BUSCAR LAS CUENTAS POR ID", notes="")
 	@GetMapping("/{id}")
 	public Mono<ResponseEntity<CuentaCredito>> viewId(@PathVariable String id){
 		return productoService.findByIdProducto(id).map(p-> ResponseEntity.ok()
@@ -48,14 +52,15 @@ public class ProductoCreditoControllers {
 				.defaultIfEmpty(ResponseEntity.notFound().build());	
 	}
 	
-	
+	@ApiOperation(value = "BUSCAR LAS CUENTAS POR ID", notes="")
 	@PutMapping
 	public Mono<CuentaCredito> updateProducto(@RequestBody CuentaCredito producto)
 	{
 		System.out.println(producto.toString());
 		return productoService.saveProductoCredito(producto);
 	}	
-		
+	
+	@ApiOperation(value = "REGISTRAR UN PRODUCTO DE CREDITO", notes="")
 	@PostMapping
 	public Mono<CuentaCredito> registrarProductoCredito(@RequestBody CuentaCredito pro){
 		//BUSCA SI EL TIPO DE CREDITO EXISTE
@@ -74,13 +79,13 @@ public class ProductoCreditoControllers {
 					});
 	}
 	
-	// GUARDA CUENTA PRODUCTO BANCO ---> 
+	@ApiOperation(value = "GUARDA CUENTA PRODUCTO BANCO DE CREDITO - SIN VALIDACION", notes="")
 	@PostMapping("/guardarCredito")
 	public Mono<CuentaCredito> guardarProBanco(@RequestBody CuentaCredito cuentaCredito) {
 		return productoService.saveProductoCredito(cuentaCredito);
 	}
 	
-	//CUENTAS SIN DEUDA
+	@ApiOperation(value = "CUENTAS SIN DEUDA", notes="")
 	@GetMapping("/dniSinDeuda/{dni}")
 	public Flux<CuentaCredito> cuentasSinDeuda(@PathVariable String dni) {
 			Flux<CuentaCredito> credito = productoService.cuentaSinConsumo(dni);
@@ -88,32 +93,33 @@ public class ProductoCreditoControllers {
 
 	}
 	
+	@ApiOperation(value = "BUSCAR POR NUMERO DE DOCUMENTO", notes="")
 	@GetMapping("/dni/{dni}")
 	public Flux<CuentaCredito> productosCreditoCliente(@PathVariable String dni) {
 		Flux<CuentaCredito> credito = productoService.productoCreditoCliente(dni);
 		return credito;
 	}
 	
-	//RETIRO DE CREDITO - SERVICIO CONSUMIDO DESDE MS-OP-CREDITO
+	@ApiOperation(value = "RETIRO DE CREDITO - SERVICIO CONSUMIDO DESDE MS-OP-CREDITO", notes="")
 	@PutMapping("/consumo/{monto}/{numero_cuenta}/{codigo_bancario}")
 	public Mono<CuentaCredito> retiroCredito(@PathVariable Double monto,@PathVariable String numero_cuenta,@PathVariable String codigo_bancario) {
 			return productoService.consumosCredito(monto, numero_cuenta,codigo_bancario);
 	}
 	
-	//REALIZO UN DEPOSITO CREDITO - CONSUMIDO DESDE MS-OP-CREDITO
+	@ApiOperation(value = "REALIZO UN DEPOSITO CREDITO - CONSUMIDO DESDE MS-OP-CREDITO", notes="")
 	@PutMapping("/pago/{numero_cuenta}/{monto}/{codigo_bancario}")
 	public Mono<CuentaCredito> despositoCredito(@PathVariable Double monto,@PathVariable String numero_cuenta,@PathVariable String codigo_bancario) {		
 			return productoService.pagosCredito(monto, numero_cuenta,codigo_bancario);
 	}
 	
-	//MUESTRA LA CUENTA BANCARIA CON EL NUMERO DE CUENTA
+	@ApiOperation(value = "MUESTRA LA CUENTA BANCARIA CON EL NUMERO DE CUENTA", notes="")
 	@GetMapping("/numero_cuenta/{numero_cuenta}/{codigo_bancario}")
 	public Mono<CuentaCredito> cuentaBancariaCredito(@PathVariable String numero_cuenta, @PathVariable String codigo_bancario) {
 		Mono<CuentaCredito> credito = productoService.productosCredito(numero_cuenta, codigo_bancario);
 		return credito;
 	}
 	
-	//MUESTRA LOS SALDOS - POR NUMERO DE CUENTA
+	@ApiOperation(value = "MUESTRA LOS SALDOS - POR NUMERO DE CUENTA", notes="")
 	@GetMapping("/saldoDisponible/{numero_cuenta}/{codigo_bancario}")
 	public Mono<CuentaCreditoDto> saldosCredito(@PathVariable String numero_cuenta, @PathVariable String codigo_bancario) {
 
@@ -124,7 +130,7 @@ public class ProductoCreditoControllers {
 			CuentaCreditoDto cd = new CuentaCreditoDto();
 			
 				cd.setDni(c.getDni());
-				cd.setNumero_cuenta(c.getNumero_cuenta());
+				cd.setNumeroCuenta(c.getNumeroCuenta());
 				cd.setSaldo(c.getSaldo());
 		
 				cd.setConsumo(c.getConsumo());

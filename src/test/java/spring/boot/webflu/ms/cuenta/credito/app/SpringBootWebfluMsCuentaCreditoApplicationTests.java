@@ -38,7 +38,7 @@ class SpringBootWebfluMsCuentaCreditoApplicationTests {
 			List<CuentaCredito> cuentaCredito = response.getResponseBody();
 			
 			cuentaCredito.forEach(p -> {
-				System.out.println(p.getNumero_cuenta());
+				System.out.println(p.getNumeroCuenta());
 			});
 			
 			Assertions.assertThat(cuentaCredito.size() > 0).isTrue();
@@ -53,7 +53,7 @@ class SpringBootWebfluMsCuentaCreditoApplicationTests {
 		tpCredito.setDescripcion("personal");
 		
 		CuentaCredito ctCredito = new CuentaCredito();		
-		ctCredito.setNumero_cuenta("900001");
+		ctCredito.setNumeroCuenta("900001");
 		ctCredito.setDni("47305710");
 		ctCredito.setTipoProducto(tpCredito);
 		ctCredito.setFecha_afiliacion("2020-02-03");
@@ -61,7 +61,7 @@ class SpringBootWebfluMsCuentaCreditoApplicationTests {
 		ctCredito.setSaldo(9.0);
 		ctCredito.setUsuario("jean");
 		ctCredito.setClave("123");
-		ctCredito.setCodigo_bancario("bcp");
+		ctCredito.setCodigoBanco("bcp");
 		
 		client.post()
 		.uri("/api/ProductoCredito/guardarCredito")
@@ -75,14 +75,14 @@ class SpringBootWebfluMsCuentaCreditoApplicationTests {
 		.consumeWith(response -> {
 			CuentaCredito b = response.getResponseBody();
 			Assertions.assertThat(b.getDni()).isNotEmpty().isEqualTo("47305710");
-			Assertions.assertThat(b.getNumero_cuenta()).isNotEmpty().isEqualTo("900001");
+			Assertions.assertThat(b.getNumeroCuenta()).isNotEmpty().isEqualTo("900001");
 			Assertions.assertThat(b.getTipoProducto().getDescripcion()).isNotEmpty().isEqualTo("personal");
 			Assertions.assertThat(b.getFecha_afiliacion()).isNotEmpty().isEqualTo("2020-02-03");
 			Assertions.assertThat(b.getFecha_caducidad()).isNotEmpty().isEqualTo("2020-02-03");
 			Assertions.assertThat(b.getSaldo()).isEqualTo(9.0);
 			Assertions.assertThat(b.getUsuario()).isNotEmpty().isEqualTo("jean");
 			Assertions.assertThat(b.getClave()).isNotEmpty().isEqualTo("123");
-			Assertions.assertThat(b.getCodigo_bancario()).isEqualTo("bcp");
+			Assertions.assertThat(b.getCodigoBanco()).isEqualTo("bcp");
 		});
 	}
 	

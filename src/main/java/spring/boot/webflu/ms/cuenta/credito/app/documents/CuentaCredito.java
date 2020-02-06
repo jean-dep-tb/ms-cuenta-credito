@@ -3,6 +3,7 @@ package spring.boot.webflu.ms.cuenta.credito.app.documents;
 import javax.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +19,11 @@ public class CuentaCredito {
 	@Id
 	@NotEmpty
 	private String id;
+	
 	@NotEmpty
-	private String numero_cuenta;
+	@Field(name="numero_cuenta")
+	private String numeroCuenta;
+
 	@NotEmpty
 	private String dni;
 	
@@ -45,21 +49,22 @@ public class CuentaCredito {
 	private String clave;
 	
 	@NotEmpty
-	private String codigo_bancario;
+	@Field(name="codigo_bancario")
+	private String codigoBanco;
 	
 	public CuentaCredito() {
 	
 	}
 
-	public CuentaCredito(String numero_cuenta,String dni,TipoCuentaCredito tipoProducto,
-			Double credito,Double saldo, Double consumo,String codigo_bancario) {
-		this.numero_cuenta = numero_cuenta;
+	public CuentaCredito(String numeroCuenta,String dni,TipoCuentaCredito tipoProducto,
+			Double credito,Double saldo, Double consumo,String codigoBanco) {
+		this.numeroCuenta = numeroCuenta;
 		this.dni = dni;
 		this.tipoProducto = tipoProducto;
 		this.credito = credito;
 		this.saldo = saldo;
 		this.consumo = consumo;
-		this.codigo_bancario = codigo_bancario;
+		this.codigoBanco = codigoBanco;
 	}
 	
 	//private tipoProducto tipoCliente;

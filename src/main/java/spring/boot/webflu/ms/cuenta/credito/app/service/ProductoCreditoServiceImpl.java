@@ -42,7 +42,7 @@ public class ProductoCreditoServiceImpl implements ProductoCreditoService {
 	@Override
 	public Mono<CuentaCredito> consumosCredito(Double monto, String numTarjeta, String codigo_bancario) {
 		//verifica si existe el numero de cuenta
-		return productoDao.viewCuentaBanco(numTarjeta, codigo_bancario).flatMap(c -> {
+		return productoDao.findByNumeroCuentaAndCodigoBanco(numTarjeta, codigo_bancario).flatMap(c -> {
 			
 			System.out.println("Objeto credito -->>>" + c.toString());
 			System.out.println("Monto -->>>>" + monto);
@@ -59,7 +59,7 @@ public class ProductoCreditoServiceImpl implements ProductoCreditoService {
 
 	@Override
 	public Mono<CuentaCredito> pagosCredito(Double monto, String numTarjeta, String codigo_bancario) {
-		return productoDao.viewCuentaBanco(numTarjeta, codigo_bancario).flatMap(c -> {
+		return productoDao.findByNumeroCuentaAndCodigoBanco(numTarjeta, codigo_bancario).flatMap(c -> {
 			
 			if (c.getConsumo() == 0) {
 				return Mono.error(new InterruptedException("SIN DEUDA"));
@@ -78,7 +78,7 @@ public class ProductoCreditoServiceImpl implements ProductoCreditoService {
 		
 	@Override
 	public Mono<CuentaCredito> productosCredito(String num, String codigo_bancario) {
-		return productoDao.viewCuentaBanco(num, codigo_bancario);
+		return productoDao.findByNumeroCuentaAndCodigoBanco(num, codigo_bancario);
 	}
 	
 	@Override
