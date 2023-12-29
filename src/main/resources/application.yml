@@ -1,0 +1,5 @@
+spring:
+   application:
+    name: ms-cuenta-credito
+   config:
+     import: optional:configserver:http://localhost:8888
